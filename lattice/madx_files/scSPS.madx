@@ -1,0 +1,67 @@
+Beam, particle = proton, energy= 1300;
+
+DEGREE  := PI/180.0;
+LQUAD   := 1.35;
+LDIP    := 12.12;
+QFSPACE  := 1.0;
+QDSPACE  := 3.0;
+DSPACE  := 2.41;
+
+QF          : QUADRUPOLE  , L := LQUAD, K1=0.0337;
+QD          : QUADRUPOLE  , L := LQUAD, K1=-0.0337;
+D           : SBEND, L=12.12, ANGLE=0.9609*DEGREE;
+ncell := 8;
+lcell := 64;
+
+scsps: SEQUENCE, REFER=CENTRE, L=(2*ncell+2)*lcell;
+! Regular cells
+n = 0;
+while (n < ncell-1){
+QF      : QF,   AT=n*lcell + (0+0.5)*LQUAD + 0*QFSPACE + 0*QDSPACE + (0+0.0)*LDIP + 0*DSPACE;
+D       : D,    AT=n*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (0+0.5)*LDIP + 0*DSPACE;
+D       : D,    AT=n*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (1+0.5)*LDIP + 1*DSPACE;
+QD      : QD,   AT=n*lcell + (1+0.5)*LQUAD + 1*QFSPACE + 1*QDSPACE + (2+0.0)*LDIP + 1*DSPACE;
+D       : D,    AT=n*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (2+0.5)*LDIP + 1*DSPACE;
+D       : D,    AT=n*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (3+0.5)*LDIP + 2*DSPACE;
+n = n + 1;
+}
+
+! Missing dipole cell
+QF.mqd1     : QF,   AT=(ncell-1)*lcell + (0+0.5)*LQUAD + 0*QFSPACE + 0*QDSPACE + (0+0.0)*LDIP + 0*DSPACE;
+! Missing dipole
+D.md1       : D,    AT=(ncell-1)*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (1+0.5)*LDIP + 1*DSPACE;
+QD.mqd1     : QD,   AT=(ncell-1)*lcell + (1+0.5)*LQUAD + 1*QFSPACE + 1*QDSPACE + (2+0.0)*LDIP + 1*DSPACE;
+D.md2       : D,    AT=(ncell-1)*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (2+0.5)*LDIP + 1*DSPACE;
+D.md3       : D,    AT=(ncell-1)*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (3+0.5)*LDIP + 2*DSPACE;
+
+! Straight sections (2 cells)
+QFS1   : QF,   AT=(ncell+0)*lcell + 0*QFSPACE + 0*QDSPACE + 0.5*LQUAD + 0*DSPACE + 0*LDIP;
+QDS1   : QD,   AT=(ncell+0)*lcell + 1*QFSPACE + 1*QDSPACE + 1.5*LQUAD + 1*DSPACE + 2*LDIP;
+QFS2   : QF,   AT=(ncell+1)*lcell + 0*QFSPACE + 0*QDSPACE + 0.5*LQUAD + 0*DSPACE + 0*LDIP;
+QDS2   : QD,   AT=(ncell+1)*lcell + 1*QFSPACE + 1*QDSPACE + 1.5*LQUAD + 1*DSPACE + 2*LDIP;
+
+! Missing dipole cell
+QF.2md1      : QF,   AT=(ncell+2)*lcell + (0+0.5)*LQUAD + 0*QFSPACE + 0*QDSPACE + (0+0.0)*LDIP + 0*DSPACE;
+D.2md1       : D,    AT=(ncell+2)*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (0+0.5)*LDIP + 0*DSPACE;
+D.2md2       : D,    AT=(ncell+2)*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (1+0.5)*LDIP + 1*DSPACE;
+QD.2mqd1     : QD,   AT=(ncell+2)*lcell + (1+0.5)*LQUAD + 1*QFSPACE + 1*QDSPACE + (2+0.0)*LDIP + 1*DSPACE;
+D.2md3       : D,    AT=(ncell+2)*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (2+0.5)*LDIP + 1*DSPACE;
+! Missing ipole
+
+! Regular cells
+n = ncell+3;
+while (n < 2*(ncell + 1)){
+QF      : QF,   AT=n*lcell + (0+0.5)*LQUAD + 0*QFSPACE + 0*QDSPACE + (0+0.0)*LDIP + 0*DSPACE;
+D       : D,    AT=n*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (0+0.5)*LDIP + 0*DSPACE;
+D       : D,    AT=n*lcell + (1+0.0)*LQUAD + 1*QFSPACE + 0*QDSPACE + (1+0.5)*LDIP + 1*DSPACE;
+QD      : QD,   AT=n*lcell + (1+0.5)*LQUAD + 1*QFSPACE + 1*QDSPACE + (2+0.0)*LDIP + 1*DSPACE;
+D       : D,    AT=n*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (2+0.5)*LDIP + 1*DSPACE;
+D       : D,    AT=n*lcell + (2+0.0)*LQUAD + 2*QFSPACE + 1*QDSPACE + (3+0.5)*LDIP + 2*DSPACE;
+n = n + 1;
+}
+
+ENDSEQUENCE;
+
+USE, PERIOD=scsps;
+TWISS, file="scSPS_TWISS.txt";
+PLOT, HAXIS=S, VAXIS1=BETX, BETY, VAXIS2=DX, COLOUR=100, FILE=scSPS;

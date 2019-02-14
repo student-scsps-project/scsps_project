@@ -3,12 +3,10 @@
 """
 Created on Thu Oct 25 00:08:57 2018
 
-@author: dave
+@author: dave and Luke
 """
 import matplotlib.pyplot as plt
 import numpy as np
-import pint
-pq = pint.UnitRegistry()
 
 # %%
 # Define functions for calculating changes in phase and energy deviation
@@ -32,7 +30,7 @@ def slippage(kinetic_energy, momentum_compaction, mass):
     return momentum_compaction - 1/g**2
 
 def gamma(kinetic_energy, mass):
-    gamma = ((kinetic_energy + mass*pq.c**2)/(mass*pq.c**2)).to(pq.dimensionless)
+    gamma = ((kinetic_energy + mass*c**2)/(mass*c**2))
     return gamma
 
 def longitudinal_mapping(initial_kinetic_energy, initial_energy_offset,
@@ -48,9 +46,9 @@ def longitudinal_mapping(initial_kinetic_energy, initial_energy_offset,
     charge = particle charge
     number_of_turns = number of turns to simulate
     '''
-    kinetic_energy = np.zeros(number_of_turns) * pq.GeV
-    dE = np.zeros(number_of_turns) * pq.GeV
-    phi = np.zeros(number_of_turns) * pq.radian
+    kinetic_energy = np.zeros(number_of_turns)
+    dE = np.zeros(number_of_turns)
+    phi = np.zeros(number_of_turns)
 
     kinetic_energy[0] = initial_kinetic_energy
     dE[0] = initial_energy_offset
@@ -63,7 +61,7 @@ def longitudinal_mapping(initial_kinetic_energy, initial_energy_offset,
                              slippage=slippage(kinetic_energy[i], momentum_compaction, mass),
                              gamma = gamma(kinetic_energy[i], mass),
                              dE = dE[i],
-                             total_energy = kinetic_energy[i] + mass*pq.c**2).to(pq.radian)
+                             total_energy = kinetic_energy[i] + mass*c**2)
         phi[i] = phi[i-1] + dphi
 
     return (kinetic_energy, dE, phi)
@@ -72,23 +70,23 @@ def longitudinal_mapping(initial_kinetic_energy, initial_energy_offset,
 # %%
 
 if __name__ == '__main__':
-
-    results = longitudinal_mapping(initial_kinetic_energy=45*pq.MeV,
-                                   initial_energy_offset=0.000*pq.GeV,
-                                   initial_phase_offset=135*pq.degree,
-                                   mass=1*pq.m_p,
-                                   momentum_compaction=0.04340,
-                                   V0=100*pq.kV,
-                                   h=1,
-                                   synchronous_phase = 30*pq.degree,
-                                   charge=1*pq.e,
-                                   number_of_turns=500
+    c=1
+    results = longitudinal_mapping(initial_kinetic_energy=25000,        # MeV
+                                   initial_energy_offset=0.000,         # MeV
+                                   initial_phase_offset=135*np.pi/180,  # radian
+                                   mass=938*c**2,                       # MeV/c^2
+                                   momentum_compaction=0.001704972746,  # unitless
+                                   V0=2,                                # MV
+                                   h=4605,                              # unitless
+                                   synchronous_phase = 30*np.pi/180,    # radian
+                                   charge=1,                            # e
+                                   number_of_turns=1000000               # unitless
                                    )
     kinetic_energy, dE, phi = results
     # %%
     # Plot the result
     plt.figure(figsize=(12, 8))
-    plt.plot(phi.to(pq.radian), (dE/kinetic_energy).to(pq.dimensionless))
+    plt.plot(phi, (dE/kinetic_energy))
     plt.grid()
     plt.xlabel("Phase (degree)")
     plt.ylabel(r"Fractional Kinetic Energy")

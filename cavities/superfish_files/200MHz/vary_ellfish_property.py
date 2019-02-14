@@ -1,13 +1,31 @@
+'''
+This program calls ELLFISH using WINE, this will not work with a native windows
+install of superfish. If ELLFISH is in the system PATH then it's possible it
+could be made to work by removing "'wine'," from the subprocess call.
+'''
 import subprocess
 import numpy as np
 import re
 
+#file_name = 'template.temp'
+#new_directory = 'right_dome_b'
+#property = "RIGHT_DOME_B"
+#values = np.linspace(16, 25, 10)
+
+#file_name = 'template.temp'
+#new_directory = 'dome_a_over_b/'
+#property = "RIGHT_DOME_A/B"
+#values = np.linspace(0.5, 0.95, 10)
+
+#file_name = 'template.temp'
+#new_directory = 'wall_angle/'
+#property = "RIGHT_Wall_angle"
+#values = np.linspace(3, 15, 13)
+
 file_name = 'template.temp'
-new_directory = 'right_dome_size'
-
-property = "RIGHT_DOME_B"
-values = np.linspace(16, 25, 10)
-
+new_directory = 'iris_a_over_b/'
+property = "RIGHT_IRIS_A/B"
+values = np.linspace(0.4, 0.9, 6)
 
 # Make directory structure
 subprocess.run(['mkdir', new_directory])
@@ -28,6 +46,9 @@ for n, i in enumerate(values):
             else:
                 output_file.write(line)
 
+    # break
+    # This is the subprocess call to ELLFISH, windows users should remove the
+    # first item of the list (that says wine).
     subprocess.run(['wine', 'ELLFISH', '{:.3f}.ell'.format(i)])
 
     # Move files to appropriate directory

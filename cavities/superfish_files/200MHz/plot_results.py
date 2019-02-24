@@ -31,6 +31,7 @@ class ellfish_result():
         self.__results_list = self.results_file_list()
         self.__shunt_impedance = np.zeros(len(self.__results_list))
         self.__max_h = np.zeros(len(self.__results_list))
+        self.__max_e = np.zeros(len(self.__results_list))
         self.__roverQ = np.zeros(len(self.__results_list))
         self.__wake_loss_parameter = np.zeros(len(self.__results_list))
         self.__transit_time = np.zeros(len(self.__results_list))
@@ -81,6 +82,10 @@ class ellfish_result():
                 self.__max_h[n] = temp
                 temp = 0
 
+                temp = float(text.split("Maximum E ")[1].split("=")[2].split("MV/m")[0])
+                self.__max_e[n] = temp
+                temp = 0
+
                 temp = float(text.split("r/Q")[1].split("=")[1].split("Ohm")[0])
                 self.__roverQ[n] = temp
                 temp = 0
@@ -99,6 +104,9 @@ class ellfish_result():
     def max_h(self):
         return self.__max_h
 
+    def max_e(self):
+        return self.__max_e
+
     def rOverQ(self):
         return self.__roverQ
 
@@ -116,11 +124,15 @@ class ellfish_result():
         Returns a list of the extracted cavity properties and a name for each
         of them in the same order.
         '''
-        property_name = ["Shunt Impedance (MOhm/m)", "ZTT (MOhm/m)",
-                         "Max H (A/m)", "r/Q (Ohm)", "Wake Loss Parameter (V/pC)",
+        property_name = ["Shunt Impedance (MOhm/m)",
+                         "ZTT (MOhm/m)",
+                         "Max H (A/m)",
+                         "Max E (MV/m)",
+                         "r/Q (Ohm)",
+                         "Wake Loss Parameter (V/pC)",
                          "Transit Time Factor"]
-        properties = [self.shunt_impedance, self.ztt, self.max_h, self.rOverQ,
-                      self.wake_loss, self.transit_time]
+        properties = [self.shunt_impedance, self.ztt, self.max_h, self.max_e,
+                        self.rOverQ, self.wake_loss, self.transit_time]
         return (property_name, properties)
 
     def parameter_name(self):
@@ -149,6 +161,7 @@ def plot_all_results(ellfish_res, save=False, directory=None, percentage=False):
             plt.ylabel(name)
         plt.xlabel(ellfish_res.parameter_name())
         plt.grid()
+        plt.title(name)
         plt.tight_layout()
         if save == True:
             plt.savefig(path.join(directory, name.replace('/', 'OVER')+'.png'), bbox_inches='tight')
@@ -189,8 +202,8 @@ del(parameter_name)
 # %%
 # Plots
 
-#plot_all_results(wall_angle, False, 'plots/wall_angle')
-#plot_all_results(right_dome, False, 'plots/right_dome_b')
-#plot_all_results(domeab, False, 'plots/dome_a_over_b')
-plot_all_results(irisab, True, 'plots/iris_a_over_b', percentage=False)
-plot_all_results(irisab, True, 'plots/iris_a_over_b', percentage=True)
+#plot_all_results(wall_angle, True, 'plots/wall_angle', percentage=False)
+#plot_all_results(right_dome, True, 'plots/right_dome_b', percentage=False)
+plot_all_results(domeab, True, 'plots/dome_a_over_b', percentage=False)
+#plot_all_results(irisab, True, 'plots/iris_a_over_b', percentage=False)
+#plot_all_results(irisab, True, 'plots/iris_a_over_b', percentage=False)

@@ -8,18 +8,18 @@ ENDTitle
 
 PARTICLE              H+
 SUPERConductor        2  9.2  1.0E-08
- 
+
 NumberOfCells         5    ; used by the ELLCAV code
 HALF_cavity
- 
+
 FILEname_prefix       REPLACE
 SEQuence_number       1
 FREQuency             200.08
 BETA                  0.999
 LENGTH                74.84322909386
 DIAMeter              130.8402446811
-E0_Normalization      1.23130066905
-E0T_Normalization     1
+E0_Normalization      5
+E0T_Normalization     5
 DOME_B                20
 LEFT_DOME_B           20
 RIGHT_DOME_B          20

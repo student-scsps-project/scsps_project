@@ -15,12 +15,12 @@ import re
 #file_name = 'template.temp'
 #new_directory = 'dome_a_over_b/'
 #property = "RIGHT_DOME_A/B"
-#values = np.linspace(0.5, 0.95, 10)
+#values = np.linspace(0.2, 1.50, 10)
 
 #file_name = 'template.temp'
 #new_directory = 'wall_angle/'
 #property = "RIGHT_Wall_angle"
-#values = np.linspace(3, 15, 13)
+#values = np.linspace(3, 22, 13)
 
 file_name = 'template.temp'
 new_directory = 'iris_a_over_b/'

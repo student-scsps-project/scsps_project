@@ -1,0 +1,61 @@
+; ELLfish control file template00.ell
+; Created 02-13-2019  14:07:06
+; Originating file template.ell
+
+Title
+Resonant frequency = 200 MHz
+ENDTitle
+
+PARTICLE              H+
+SUPERConductor        4  9.2  1.0E-08
+
+NumberOfCells         1    ; used by the ELLCAV code
+HALF_cavity
+
+FILEname_prefix       REPLACE
+SEQuence_number       1
+FREQuency             200.08
+BETA                  0.999
+LENGTH                74.84322909386
+DIAMeter              130.8402446811
+E0_Normalization      5
+DOME_B                14
+LEFT_DOME_B           14
+RIGHT_DOME_B          14
+DOME_A/B              0.7
+LEFT_DOME_A/B         0.7
+RIGHT_DOME_A/B        0.7
+WALL_Angle            15
+LEFT_Wall_angle       15
+RIGHT_Wall_angle      15
+EQUATOR_flat          0.0
+LEFT_Equator_flat     0.0
+RIGHT_Equator_flat    0.0
+IRIS_flat             0.0
+LEFT_Iris_flat        0.0
+RIGHT_Iris_flat       0.0
+RIGHT_BEAM_tube       0.0
+IRIS_A/B              1.0
+LEFT_IRIS_A/B         1.0
+RIGHT_IRIS_A/B        1.0
+BETASTART             0.0
+BETASTOP              0.0
+BETASTEP              0.0
+BETATABLE             0.0
+BORE_radius           15
+SECOND_Beam_tube      0.0
+SECOND_TUBE_Radius    0.0
+DELTA_frequency       0.01
+MESH_size             0.2
+INCrement             2
+START                 2
+
+; Start codes for ELLfish:
+; 1 No tuning
+; 2 Adjust diameter
+; 3 Adjust dome ellipse size
+; 4 Adjust wall slope
+; 5 Adjust wall slope with fixed iris ellipse size
+;  (Right side only in full cavities for 3, 4, and 5.)
+
+EndFile
